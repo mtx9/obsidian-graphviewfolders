@@ -1,18 +1,23 @@
-# Graph view folders for Obsidian
-
-https://forum.obsidian.md/t/show-folders-as-areas-in-the-graph/8208/13
-
-*Bild von dem verlinkten Post*
-
-## History
+# Graph View Folders for Obsidian
 
 I had the idea of adding folders to the graph view of Obsidian.
 
-However, I stopped working on it, because I couldn't solve the performance issues. Yet, if you'd like to try to solve these issues, you're free to create a [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) , or use it as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) for your own graph view plugin! I do not intend to maintain this repository (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin.
+https://forum.obsidian.md/t/show-folders-as-areas-in-the-graph/8208/13
+
+![Folders without tags](https://github.com/user-attachments/assets/4275d140-554a-4b65-9bb8-a80145384c77)
+
+However, I stopped working on it, because I couldn't solve the performance issues.
+
+***Yet, if you'd like to try to solve these issues, you're free to create a [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) , or use it as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) for your own graph view plugin!***
+
+**I do not intend to maintain this repository** (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin.
 
 The following lines offer insights into the code, additional resources and things I've learned about Obsidian's codebase.
 
 I've written the plugin using the classical C-style braces formatting, for I think this is much easier to inspect and more beautiful. Please don't judge me for that! :)
+
+![Mockup hq](https://github.com/user-attachments/assets/049782ae-7c66-495d-8449-da753cbf0813)
+
 ## Quick explanation of the code
 
 The basic approach for handling graph view enhancements is:
