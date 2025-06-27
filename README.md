@@ -1,96 +1,104 @@
-# Obsidian Sample Plugin
+# Graph view folders for Obsidian
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+https://forum.obsidian.md/t/show-folders-as-areas-in-the-graph/8208/13
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+*Bild von dem verlinkten Post*
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+## History
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+I had the idea of adding folders to the graph view of Obsidian.
 
-## First time developing plugins?
+However, I stopped working on it, because I couldn't solve the performance issues. Yet, if you'd like to try to solve these issues, you're free to create a [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) , or use it as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) for your own graph view plugin! I do not intend to maintain this repository (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin.
 
-Quick starting guide for new plugin devs:
+The following lines offer insights into the code, additional resources and things I've learned about Obsidian's codebase.
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+I've written the plugin using the classical C-style braces formatting, for I think this is much easier to inspect and more beautiful. Please don't judge me for that! :)
+## Quick explanation of the code
 
-## Releasing new releases
+The basic approach for handling graph view enhancements is:
+- Inherit your graph view leaf class from `GVWLeaf` and 
+- Pass your graph view leaf class to the `GraphViewWrapper` object in the `onload`-function of your plugin
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+Example:
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
+``` typescript
+async onload()
+{ 
+   /* ... */
+   this.gvw = new GraphViewWrapper(this.app, this, GraphViewFoldersLeaf);
+   /* ... */
 }
 ```
 
-If you have multiple URLs, you can also do:
+The code that moves the nodes is in the function `applyForces` in the class `GraphViewFolder` in the file `graphviewfolders.ts.`
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+### Approach for drawing folders
 
-## API Documentation
+- Collect all the visible files and folders of the graph view
+- Create graph view folder objects and pass them to the PIXI renderer
+- Apply the new folder forces to the file nodes and folders in the graph view
+- Update the graph view folders' variables (location, size) when there is any change in the nodes' position.
 
-See https://github.com/obsidianmd/obsidian-api
+## Features
+
+- Folders for files in the graph view
+- Toggle button for folders in the native graph view panel
+- Support for multiple instances of the graph view (split workspace)
+- Support for normal und local graph views
+- Panning with the arrow keys
+
+## Known Bugs
+
+- Folders can inflate each other when they overlap and nodes are located in certain constellations. Perhaps the (missing) force that attracts file nodes to their folder center and a force that repels folders from each other would solve this.
+- Sometimes nodes become shaky.
+- Zooming with keys and mouse isn't 100% correct. I couldn't figure out the right formula.
+- Panming with the mouse isn't 100% correct. There is a temporal “lack” value that creates a small jerk. I think I should have created a mouse handling function instead of relying on the panning and mouse position variables.
+- Mysterious: When I split a graph view vertically, the first graph view of its kind doesn't show the folders.
+
+## Missing
+
+- Folder repel force - folders on the same hierarchy level should repel each other
+- Folder center force - File nodes should be attracted to the center of their folder
+- Subfolders
+- Effective toggle button for folders
+- Welzl's algorithm for minimum enclosing circle - Currently, the code uses the center of bounding rectangles.
+- Handling of adding, moving, renaming or removing files, folders or tags in Obsidian or in the file system of the OS
+- Zooming with the mouse
+- Labels for folders
+- Decrease the brightness of folders and their labels when the mouse cursor hovers over a node
+
+## Things I've learned about Obsidian's codebase
+
+### How to change nodes positions
+
+This was a tricky one to figure out. It must be done by posting a message to the graph worker thread. I haven't solved it perfectly, as some minor shaking still appears in the nodes. I couldn't find out why this happens.
+
+I suspect the reason is that the native graph worker thread calculates the node's position at a higher frequency than fixed 60 fps. But the current code only calculates it synchronized with each frame. Or maybe it's the interchange of forcing the nodes' positions and relieving them to the native forces.
+
+The respective function is `applyForces(node: Object): void`.
+### Fix nodes position
+
+   You can fix a node's position by sending fixed position values to the graph worker thread. Another (faster) option is to use the `renderer.nodes` array and set `fx` and/or `fy` of its items.
+   But it doesn't work with `0`! Instead you could use something like `Number.MIN_VALUE`, which is the smallest representable positive numeric value.
+### Keep rendering
+
+You have to tell the renderer that something has changed by calling `renderer.changed();`.
+### Optimization
+
+Obsidian uses a worker thread to calculate the nodes' positions by using a quadtree algorithm and WebAssembly.
+
+The best way (but utterly intracate to implement) I could think of to speed up the calculations is to write a separate worker thread, which changes the values of the buffer of the native graph worker thread:
+
+https://forum.obsidian.md/t/graph-view-allow-to-configure-how-node-size-is-calculated/4247/47
+## Ressources
+
+- Build a plugin for Obsidian
+  https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin
+- PIXI (2D WebGL renderer used by the graph view)
+  https://pixijs.com/
+- How to debug Obsidian plugins 
+  https://mnaoumov.wordpress.com/2022/05/10/how-to-debug-obsidian-plugins/?preview_id=1094&preview_nonce=d133fd046d&preview=true
+
+## Acknowledgment
+
+Thanks to natefrisch01 for providing a starting point and encouragement!
