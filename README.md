@@ -10,7 +10,7 @@ However, I stopped working on it, because I couldn't solve the performance issue
 
 ***Yet, if you'd like to try to solve these issues, you're free to create a [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) , or use it as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) for your own graph view plugin!***
 
-**I do not intend to maintain this repository** (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin. (If you create a fork, you could pull the updates into your repository that I made in this repository.)
+**I do not intend to maintain this repository** (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin. (If you create a fork, you could pull the updates that I make into your repository.)
 
 The following lines offer insights into the code, additional resources and things I've learned about Obsidian's codebase.
 
@@ -95,7 +95,7 @@ Obsidian uses a worker thread to calculate the nodes' positions by using a quadt
 The best way (but utterly intracate to implement) I could think of to speed up the calculations is to write a separate worker thread, which changes the values of the buffer of the native graph worker thread:
 
 https://forum.obsidian.md/t/graph-view-allow-to-configure-how-node-size-is-calculated/4247/47
-## Ressources
+## Resources
 
 - Build a plugin for Obsidian
   https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin
