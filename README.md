@@ -10,7 +10,7 @@ However, I stopped working on it, because I couldn't solve the performance issue
 
 ***Yet, if you'd like to try to solve these issues, you're free to create a [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) , or use it as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) for your own graph view plugin!***
 
-**I do not intend to maintain this repository** (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin.
+**I do not intend to maintain this repository** (maybe a few small additions), as I do not have the time. That's why I'm totally fine with you publishing your fork as a plugin. (If you create a fork, you could pull the updates into your repository that I made in this repository.)
 
 The following lines offer insights into the code, additional resources and things I've learned about Obsidian's codebase.
 
